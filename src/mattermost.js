@@ -2,7 +2,7 @@ const request = require('superagent');
 
 class Mattermost {
     constructor(config) {
-        this.api_url = config.api_url || 'https://mattermost.tari.com/api/v4';
+        this.api_url = config.api_url;
         this.personal_token = config.personal_token;
         this.teams = null;
         this.channel_map = null;

@@ -1,15 +1,17 @@
+#!/usr/bin/env node
 const express = require('express');
 const bodyParser  = require('body-parser');
 
-const PORT = (process.env.PORT || 5000);
-const app = express();
-const SECURITY_TOKEN = process.env.SECURITY_TOKEN;
 const relays = require('./src/relayers');
 const Mattermost = require('./src/mattermost');
+const program = require('commander');
 
-const client = new Mattermost({
-    personal_token: process.env.MATTERMOST_TOKEN
-});
+program.option('-c --config [file]', 'configuration file', 'config.js')
+    .parse(process.argv);
+
+console.log(`Loading configuration from ${program.config}`);
+const config = require(`${__dirname}/${program.config}`);
+const client = new Mattermost(config.mattermost);
 
 console.log('Loading Mattermost teams');
 client.get_teams().then(teams => {
@@ -18,13 +20,17 @@ client.get_teams().then(teams => {
 }).then(() => {
     console.log('Mattermost ready');
 }).catch(err => {
-    console.error(err.response.body);
+    const msg = (err.response && err.response.body) || err;
+    console.error(msg);
     process.exit(1);
 });
 
 const apps = {};
-relays.register(apps, client, 'github', 'tari-eng', process.env.GITHUB_TOKEN);
+const gh = config.github;
+relays.register(apps, client, 'github', gh.channel, gh.token);
 
+
+const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -55,5 +61,6 @@ app.post('/:app', (req, res) => {
     req.app.handle(req, res);
 });
 
-app.listen(PORT);
-console.log(`Webhook Server started... port: ${PORT}`);
+const port = config.natterbot.port;
+app.listen(port);
+console.log(`Webhook Server started... port: ${port}`);
