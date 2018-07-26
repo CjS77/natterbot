@@ -38,7 +38,6 @@ class Relay {
     handle(req, res) {
         const body = Object.assign({}, req.body);
         delete body.token;
-        console.log(`${new Date()}: ${this.name}`, body);
         const out = this.translate(body);
         this.mattermost.create_post(this.channel, out, false)
             .then(msg => {

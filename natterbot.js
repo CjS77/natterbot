@@ -40,13 +40,13 @@ app.get('/', function(req, res) {
 });
 
 app.post('/apps', function(req, res) {
+    console.log('POST /apps');
     const appList = relays.available_apps();
     res.json({ success: true, apps: appList });
-    console.log('GET /apps');
 });
 
 app.post('/:app', (req, res, next) => {
-    console.log('Received: ' + JSON.stringify(req.body));
+    console.log('Received: ' + JSON.stringify(req.url));
     const app = apps[req.params.app];
     if (!app) {
         res.status(404)
