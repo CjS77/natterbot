@@ -26,8 +26,11 @@ client.get_teams().then(teams => {
 });
 
 const apps = {};
+const natterbot = config.natterbot;
 const gh = config.github;
+const dh = config.dockerhub;
 relays.register(apps, client, 'github', gh.channel, gh.token);
+relays.register(apps, client, 'dockerhub', dh.channel, natterbot.token);
 
 
 const app = express();

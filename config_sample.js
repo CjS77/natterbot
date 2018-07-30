@@ -10,5 +10,9 @@ module.exports = {
     github: {
         token: process.env.GITHUB_TOKEN,
         channel: 'town-square'
+    },
+    dockerhub: {
+        channel: 'town-square',
+        token: process.env.DOCKERHUB_TOKEN
     }
 };

@@ -49,8 +49,8 @@ class Github extends Relay {
                 status = 'commented on';
                 break;
         }
-        let result = `### Pull Request Review ${payload.action}\n`;
-        result += `[${review.user.login}](${review.user.html_url}) ${status} [${pr.title}](${pr.url})\n`;
+        let result = `**Github**: Pull Request Review ${payload.action}\n`;
+        result += `[${review.user.login}](${review.user.html_url}) ${status} [${pr.title}](${pr.html_url})\n`;
         result += `[See Review](${review.html_url})\n`;
         result += `[See PR diff](${pr.diff_url})`;
         return result;
@@ -66,7 +66,7 @@ class Github extends Relay {
 
     static extractIssue(payload) {
         const issue = payload.issue;
-        let result = `### Issue ${payload.action}: ${issue.title} on [${payload.repository.full_name}](${payload.repository.html_url})\n`;
+        let result = `**Github:** Issue ${payload.action}: ${issue.title} on [${payload.repository.full_name}](${payload.repository.html_url})\n`;
         result += `Created by [${issue.user.login}](${issue.user.html_url})\n`;
         result += `[Issue](${issue.html_url})\n`;
         result += `[Comments](${payload.comment.html_url})`;
@@ -75,7 +75,7 @@ class Github extends Relay {
 
     static extractPullRequest(payload) {
         const pr = payload.pull_request;
-        let result = `### Pull Request ${payload.action}: ${pr.title} on [${payload.repository.full_name}](${payload.repository.html_url})\n`;
+        let result = `**Github:** Pull Request ${payload.action}: ${pr.title} on [${payload.repository.full_name}](${payload.repository.html_url})\n`;
         result += `Created by [${pr.user.login}](${pr.user.html_url})\n`;
         result += `[Pull request](${pr.html_url})\n`;
         return result;

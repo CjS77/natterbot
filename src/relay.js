@@ -28,7 +28,8 @@ class Relay {
      * Default authorization middleware. Override for custom checking
      */
     authorize(req, res, next) {
-        if (req.body.token !== this.token) {
+        const token = req.body.token || req.query.token;
+        if (token !== this.token) {
             res.status(401).send({ error: 'Unauthorized' });
             return;
         }
