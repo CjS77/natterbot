@@ -26,5 +26,10 @@ List all registered apps. These apps can be used to send webhooks to, i.e.
 Set your github webhooks to point to https://mynatterbotserver.com/github and natterbot will format and relay
 github push events to Mattermost
 
+# /dockerhub
+
+Set your docker hub webooks to https://mynatterbotserver.com/dockerhub?token=xxx and natterbot will format and relay 
+image creation messages to the Mattermost channel specified in the config
+
 
     
