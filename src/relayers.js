@@ -10,18 +10,21 @@ function available_apps() {
  * @param apps An apps map object
  * @param mattermost {MatterMost} Mattermost client
  * @param app {string} The app name
- * @param channel {string} The channel to post message in
- * @param token {string} security token
+ * @param cfg {object} The config object
  */
-function register(apps, mattermost, app, channel, token) {
+function register(apps, mattermost, app, cfg) {
+    if (cfg.enabled === false) {
+        console.log(`${app} is disabled. Skipping registration`);
+        return null;
+    }
     const appClass = relayers[app];
     if (!appClass) {
         console.log(`${app} replayer not found`);
     }
     let config = {
         appName: app,
-        channel: channel,
-        token: token
+        channel: cfg.channel,
+        token: cfg.token
     };
     const instance = new appClass(mattermost, config);
     console.log(`${app} registered in #${channel}`);
