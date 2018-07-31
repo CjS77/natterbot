@@ -4,6 +4,7 @@ const bodyParser  = require('body-parser');
 
 const relays = require('./src/relayers');
 const Mattermost = require('./src/mattermost');
+const twitter = require('./src/twitter');
 const program = require('commander');
 
 program.option('-c --config [file]', 'configuration file', 'config.js')
@@ -19,18 +20,21 @@ client.get_teams().then(teams => {
     return client.get_channels(teams[0].id);
 }).then(() => {
     console.log('Mattermost ready');
+    registerApps();
 }).catch(err => {
     const msg = (err.response && err.response.body) || err;
     console.error(msg);
     process.exit(1);
 });
 
-const apps = {};
-const natterbot = config.natterbot;
-const gh = config.github;
-const dh = config.dockerhub;
-relays.register(apps, client, 'github', gh.channel, gh.token);
-relays.register(apps, client, 'dockerhub', dh.channel, dh.token);
+function registerApps() {
+    const apps = {};
+    relays.register(apps, client, 'github', config.github);
+    relays.register(apps, client, 'dockerhub', config.dockerhub);
+    if (config.twitter.enabled) {
+        twitter.start_stream(client, config.twitter);
+    }
+}
 
 
 const app = express();

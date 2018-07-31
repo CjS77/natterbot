@@ -77,7 +77,6 @@ class Mattermost {
                 channel_id: ch.id,
                 message: message
             };
-            console.log(data);
             return this.api('post', 'posts', data);
         });
     }
