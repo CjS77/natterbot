@@ -27,7 +27,7 @@ function register(apps, mattermost, app, cfg) {
         token: cfg.token
     };
     const instance = new appClass(mattermost, config);
-    console.log(`${app} registered in #${channel}`);
+    console.log(`${app} registered in #${cfg.channel}`);
     apps[app] = instance;
     return instance;
 }
