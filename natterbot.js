@@ -13,6 +13,7 @@ program.option('-c --config [file]', 'configuration file', 'config.js')
 console.log(`Loading configuration from ${program.config}`);
 const config = require(`${__dirname}/${program.config}`);
 const client = new Mattermost(config.mattermost);
+const apps = {};
 
 console.log('Loading Mattermost teams');
 client.get_teams().then(teams => {
@@ -28,7 +29,6 @@ client.get_teams().then(teams => {
 });
 
 function registerApps() {
-    const apps = {};
     relays.register(apps, client, 'github', config.github);
     relays.register(apps, client, 'dockerhub', config.dockerhub);
     if (config.twitter.enabled) {
