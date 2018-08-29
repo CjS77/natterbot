@@ -22,6 +22,9 @@ class Github extends Relay {
         if (payload.review) {
             return Github.extractReview(payload);
         }
+        if (payload.issue && payload.comment) {
+            return Github.extractIssueComment(payload);
+        }
         if (payload.issue) {
             return Github.extractIssue(payload);
         }
@@ -80,6 +83,15 @@ class Github extends Relay {
         }
         result += `[Issue](${issue.html_url})\n`;
         result += `[Comments](${issue.comments_url})`;
+        return result;
+    }
+
+    static extractIssueComment(payload) {
+        const issue = payload.issue;
+        const comment = payload.comment;
+        const user = comment.user;
+        let result = `**Github:** Issue Comment ${payload.action}: [${issue.title}](${issue.html_url}) on [${payload.repository.full_name}](${payload.repository.html_url})\n`;
+        result += `[${user.login}](${user.html_url}) says "${comment.body}"\n`;
         return result;
     }
 
