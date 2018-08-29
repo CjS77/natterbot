@@ -69,7 +69,7 @@ class Github extends Relay {
         let result = `**Github:** Issue ${payload.action}: ${issue.title} on [${payload.repository.full_name}](${payload.repository.html_url})\n`;
         result += `Created by [${issue.user.login}](${issue.user.html_url})\n`;
         result += `[Issue](${issue.html_url})\n`;
-        result += `[Comments](${payload.comment.html_url})`;
+        result += `[Comments](${issue.comments_url})`;
         return result;
     }
 
