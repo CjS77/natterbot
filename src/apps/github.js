@@ -67,7 +67,17 @@ class Github extends Relay {
     static extractIssue(payload) {
         const issue = payload.issue;
         let result = `**Github:** Issue ${payload.action}: ${issue.title} on [${payload.repository.full_name}](${payload.repository.html_url})\n`;
-        result += `Created by [${issue.user.login}](${issue.user.html_url})\n`;
+        // "assigned", "unassigned", "labeled", "unlabeled", "opened", "edited", "milestoned", "demilestoned", "closed", or "reopened"
+        switch (payload.action) {
+            case 'opened':
+                result += `Created by [${issue.user.login}](${issue.user.html_url})\n`;
+                break;
+            case 'assigned':
+                result += `Assigned to [${issue.assignee.login}](${issue.assignee.html_url})\n\`;`
+                break;
+            default:
+                result += `${payload.action} by [${issue.user.login}](${issue.user.html_url})\n`;
+        }
         result += `[Issue](${issue.html_url})\n`;
         result += `[Comments](${issue.comments_url})`;
         return result;
