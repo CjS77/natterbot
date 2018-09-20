@@ -5,6 +5,7 @@ module.exports = {
     },
     mattermost: {
         api_url: process.env.MATTERMOST_URL,
+        team: 'myteam',
         personal_token: process.env.MATTERMOST_TOKEN
     },
     github: {
