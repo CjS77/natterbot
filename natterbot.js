@@ -15,10 +15,18 @@ const config = require(`${__dirname}/${program.config}`);
 const client = new Mattermost(config.mattermost);
 const apps = {};
 
-console.log('Loading Mattermost teams');
-client.get_teams().then(teams => {
-    console.log('Loading channels');
-    return client.get_channels(teams[0].id);
+
+let team = config.mattermost.team ? client.get_team_by_name(config.mattermost.team) : getFirstTeam(client);
+
+function getFirstTeam(client) {
+    console.log('Loading Mattermost team list ');
+    return client.get_teams().then(teams => teams[0]);
+}
+
+team.then(team => {
+    const {id, name} = team;
+    console.log(`Loading channels for ${name}`);
+    return client.get_channels(id);
 }).then(() => {
     console.log('Mattermost ready');
     registerApps();

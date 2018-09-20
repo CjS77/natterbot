@@ -26,6 +26,9 @@ class Mattermost {
         });
     }
 
+    /**
+     * Only returns the public teams, unless this is an admin user
+     */
     get_teams(force = false) {
         if (!force && this.teams) {
             return Promise.resolve(this.teams);
@@ -34,6 +37,10 @@ class Mattermost {
             this.teams = teams;
             return teams;
         });
+    }
+
+    get_team_by_name(teamName) {
+        return this.api('get', `teams/name/${teamName}`);
     }
 
     get_users() {
