@@ -11,7 +11,7 @@ class PagerDuty extends Relay {
         messages.forEach(message => {
             const {incident} = message;
             let row = `*Incident*: [${incident.incident_number}] ${incident.title}\n`;
-            row += `${incident.description}`;
+            row += `${incident.description}\n`;
             row += `${incident.status} - ${incident.html_url}\n\n`;
             response += row;
         });
