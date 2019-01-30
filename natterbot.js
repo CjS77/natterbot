@@ -39,6 +39,7 @@ team.then(team => {
 function registerApps() {
     relays.register(apps, client, 'github', config.github);
     relays.register(apps, client, 'dockerhub', config.dockerhub);
+    relays.register(apps, client, 'pagerduty', config.pagerduty);
     if (config.twitter.enabled) {
         twitter.start_stream(client, config.twitter);
     }
