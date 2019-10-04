@@ -10,12 +10,28 @@ class PagerDuty extends Relay {
         let response = '';
         messages.forEach(message => {
             const {incident} = message;
-            let row = `*Incident*: [${incident.incident_number}] ${incident.title}\n`;
-            row += `${incident.description}\n`;
-            row += `${incident.status} - ${incident.html_url}\n\n`;
+            let row = `${this._getStatusDisplay(incident.status)} - ${incident.title}\n`;
+            row += `[${incident.incident_number}] ${incident.html_url}\n`;
+            row += `${incident.description}\n\n`;
             response += row;
         });
         return response;
+    }
+
+    _getStatusDisplay(status) {
+        let display = status;
+        switch (status) {
+            case 'triggered':
+                display = '🔔';
+                break;
+            case 'acknowledged':
+                display = '👍';
+                break;
+            case 'resolved':
+                display = '🎉 ✅';
+                break;
+        }
+        return display;
     }
 }
 
